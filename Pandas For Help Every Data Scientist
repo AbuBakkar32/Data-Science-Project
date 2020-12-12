@@ -1,0 +1,239 @@
+Author: Abu Bakkar Siddik
+Mobile: +8801689040992
+Dhaka, Bangladesh
+
+
+###################################### Data Cleaning ##################################
+
+titanic.head()
+titanic.tail()
+titanic.info()
+titanic.shape()
+titanic.describe()
+
+titanic[['Survived', 'Gender','Age','Fare','Emb','Deck']].describe()
+titanic.Survived.unique()
+titanic.Survived.value_counts()
+
+titanic.Survived.replace(to_replace=['yes','no'], value=[1,0], inplace=True)
+titanic.Survived.value_counts()
+
+
+
+summer.rename(columns={"Athlete Name:"Athelete_Name"}, inplace=True)
+summer.Medal.value_counts()
+summer.Medal.replace(to_replace=['Gold Medal'], value=["Gold"], inplace=True)
+summer.iloc[:, 1:].describe()
+
+
+######################## String Operation#########################
+
+pd.to_numeric(titanic.Fare)  # sometimes it get error to remove $ sign or any other string
+titanic.Fare.str.replace("$", "")
+
+# to remove upper case of a name and make it casefold
+summer.Athlete_Name=summer.Athlete_Name.str.title()
+
+# to remove extra space of a name
+summer.loc[summer.Athlete_Name=="Hajos, Alfred"] # its would be not working if there have any empty space
+summer.loc[summer.Athlete_Name.str.contains=="Hajos, Alfred"] or
+summer.iloc[0, 4]
+or
+summer.Athlete_Name.str.strip()
+
+
+
+######################## Change data type #########################
+
+pd.to_numeric(titanic.Fare) OR
+titanic.Fare.astype('float') OR
+titanic["Fare"] = titanic["Fare"].astype("float")
+
+######################## NaN value and handle Null value #########################
+
+sales.iloc[1,1]=None
+sales.iloc[1,1]=np.nan
+
+titanic.isna()
+titanic.isna().sum(axis=0)
+titanic.isna().any(axis=0)
+titanic[titanic.isna().any(axis=1)] 
+titanic.notna()
+titanic.notna().sum(axis=0)
+
+titanic.notna().all(axis=0)
+sns.heatmap(dataset.notna(), annot=True)
+plt.show()
+
+titanic.Age.value_counts(dropna = True)
+titanic.Survived.replace(to_replace="Missing Data", value=np.na, inplace=True)
+summer[summer.isna().any(axis=1)]
+
+######################## Removing  Missing values ##################
+
+titanic.Age.value_counts(dropna = False)
+titanic.Age.mean(skipna = True)
+titanic.dropna().shape()
+titanic.dropna(axis = 0, how = "any").shape
+titanic.dropna(axis = 1, how = "any").shape
+titanic.dropna(axis = 0, how = "all").shape
+titanic.dropna(axis = 1, how = "all").shape
+titanic.dropna(axis = 0, thresh = "8").shape
+titanic.dropna(axis = 1, thresh = "500").shape
+titanic.dropna(axis = 1, thresh = "500").shape
+titanic.dropna(axis = 1, thresh = "500", inplace = True).shape
+titanic.dropna(axis = 0, subset = ["Survived", "Class", "Gender", "Age"] ,thresh = "4").shape
+titanic.dropna(axis = 0, subset = ["Survived", "Class", "Gender", "Age"] , how = 'any').shape
+
+######################## Replacing Missing values ##################
+
+Titanic.Age.mean()
+mean = round(Titanic.Age.mean(),1)
+Titanic.Age.fillna(mean, inplace = True)
+
+######################## Detection Duplicates values ##################
+
+titanic.duplicated(keep = "first").sum()
+titanic[titanic.duplicated(keep = "first")]
+titanic[titanic.duplicated(keep = False)]
+
+
+
+################################################################################################################################################
+
+
+
+######################## Text Data convert ##################
+
+df['name'] = df['name'].str.lower()
+df['name'] = df['name'].str.upper()
+df['name'] = df['name'].str.len()
+df['name'] = df['name'].str.strip() # if data have any space in before or after
+df['name'] = df['name'].str.split(' ')
+df['name'] = df['name'].str.contains('a')
+df['name'] = df['name'].str.replace('o','@')
+df['name'] = df['name'].str.repeat(2) # rakib rakib, abu abu
+df['name'] = df['name'].str.count('r') # how many time r present in single data
+df['name'] = df['name'].str.startswith("r")
+df['name'] = df['name'].str.endswith('b')
+df['name'] = df['name'].str.find('r')
+df['name'] = df['name'].str.swapcase()
+
+
+
+######################## Merge Opperration ##################
+
+pd.merge(dc,marvel, on="subject")
+pd.merge(dc,marvel, on="subject", suffixes=['_dc','_marvel'])
+pd.merge(dc,marvel, on=["subject",",marks"], suffixes=['_dc','_marvel'])
+pd.merge(dc,marvel, on="subject", suffixes=['_dc','_marvel'], how='left')
+pd.merge(dc,marvel, on="subject", suffixes=['_dc','_marvel'], how='right')
+pd.merge(dc,marvel, on="subject", suffixes=['_dc','_marvel'], how='outer')
+
+######################## concatanation Opperration ##################
+
+pd.concat([dc,marvel])
+pd.concat([dc,marvel],ignore_index=True)
+pd.concat([dc,marvel],keys=['DC','MARVEL'])
+pd.concat([dc,marvel], axis=1)
+dc.append(marvel)
+dc.append([marvel,dc,marvel,dc])
+
+
+######################## Groupe By Opperration ##################
+df.groupby('Name')
+df.groupby('Name').groups
+df.groupby(['Name','Course']).groups
+df.groupby('Name')
+
+### iterationg Group ###
+grouped = df.groupby('Name')
+for row_name, group in grouped:
+	print(row_name)
+	print(group)
+
+
+grouped = df.groupby(['Name','Course'])
+for row_name, group in grouped:
+	print(row_name)
+	print(group)
+
+
+df.groupby('Name').get_group('Raj')
+df.groupby(['Name','Subject']).get_group(['Raj','BE'])
+
+df.groupby('Name').aggregate(np.sum)
+df.groupby('Name').aggregate(np.mean)
+df.groupby('Name').aggregate(np.median)
+
+
+######################## Itteratin Opperration ##################
+
+for r, c in df.iterrow():
+	print(r,c)
+
+for k, v in df.iteritems():
+	print(k,v)
+
+for i in df.itertuples():
+	print(i)
+
+
+######################## Sort Opperration ##################
+
+df.sort_values('Name', axis=0, ascending=True, inplace=True)
+df.sort_values('Age', axis=0, ascending=False, inplace=True)
+df.sort_values('Age', axis=0, ascending=True, inplace=True, na_position='first')
+
+df.sort_values(['Name',''Age'], axis=0, ascending=True, inplace=True)
+
+######################## Null values and handle Opperration ##################
+
+df.isnull()
+df[df['Course'].isnull()]
+df.isnull().sum()
+df.fillna('MBA')
+df['Course'].fillna('MBA', inplace=True)
+df.fillna(method='pad') #fill data seeing the before data
+df.fillna(method='bfill') #fill data seeing the after data
+df['Course'].replace(to_replace=np.nan, value='MBA', inplace=True)
+
+df.dropna()
+df.dropna(axis=0)
+df.dropna(axis=1)
+
+######################## Drop row and column Opperration ##################
+
+df.drop(1, inplace=True)
+df.drop([0,3], inplace=True)
+
+df.drop('Age',axis=1, inplace=True)
+df.drop(['Age','Name'],axis=1, inplace=True)
+
+######################## Add Column Opperration ##################
+
+df['city'] = ['dhaka','sylhet','cennai']
+df.insert(2, 'weight', [56,62,59,66], True)
+
+######################## Select Row & Column Opperration ##################
+
+df[df['Actor']=='Dayean']
+df[(df['Actor']=='Chirs Hemsworths') & (df['Movies']=='Thor')]
+df[(df['Age']>56)]
+
+df.loc['a']
+df.loc[['a','b']]
+df.loc[['a','b'], 'Name']
+df.loc[['a','b'], ['Name','Movies']]
+
+df.iloc[1]
+df.iloc[0:3]
+df.iloc[0:3,1]
+df.iloc[0:3,2:4]
+
+######################## visualization Opperration ##################
+
+df.plot.area(x,y,figsize=(8,6))
+df['Marks'].plot.hist(figsize=(8,6))
+df.plot.scatter(x,y,figsize=(8,6))
+df.plot.box(figsize=(8,6))
