@@ -6,5 +6,4 @@
 ### Task-5: Exploratory Data Analysis - Sports
 ### Task-6 Prediction using Decision Tree Algorithm
 ### Task-7 : Stock Market Prediction using Numerical and Textual Analysis
-
- 
+### Task-8 : Timeline Analysis : Covid-19
